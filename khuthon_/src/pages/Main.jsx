@@ -4,6 +4,11 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import axios from "axios";
 import LiveData from "../component/LiveChart";
+import Energy1 from "../images/Energy1.png";
+import Energy2 from "../images/Energy1.png";
+import Energy3 from "../images/Energy1.png";
+import Energy4 from "../images/Energy1.png";
+import Energy5 from "../images/Energy1.png";
 
 const MainDisplay = styled.div`
   display: grid;
@@ -14,11 +19,12 @@ const MainDisplay = styled.div`
 const BasicContainer = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: white;
   border-radius: 5px;
   width: 300px;
   height: 200px;
-  gird-column: span 1;
+  grid-column: span 1;
 `;
 
 const CustomContainer = styled.div`
@@ -32,6 +38,12 @@ const CustomContainer = styled.div`
   height: ${(props) => props.height}px;
   grid-column: span 2; /* CustomContainer는 2개로 고정 */
   grid-row: auto;
+`;
+
+const MainLeftColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px; // 간격을 20px로 설정합니다.
 `;
 
 const Child = ({ number }) => {
@@ -96,6 +108,15 @@ const Main = ({ main_Data }) => {
     ],
   });
 
+  const ImageList = (id) =>
+    [
+      { icon: Energy1 },
+      { icon: Energy2 },
+      { icon: Energy3 },
+      { icon: Energy4 },
+      { icon: Energy5 },
+    ][id];
+
   return (
     <MainDisplay>
       <BasicContainer>
@@ -118,13 +139,29 @@ const Main = ({ main_Data }) => {
         />
         <button onClick={handleButtonClick}></button>
       </CustomContainer>
-      <CustomContainer height={210}>
-        {/* <LiveData name={"장치별 전력 사용량"} type={"pie"} data={data} /> */}
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={options("장치별 전력 사용량", "pie")}
-        ></HighchartsReact>
-      </CustomContainer>
+      <MainLeftColumn>
+        <CustomContainer height={200}>
+          {/* <LiveData name={"장치별 전력 사용량"} type={"pie"} data={data} /> */}
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options("장치별 전력 사용량", "pie")}
+          />
+        </CustomContainer>
+        <CustomContainer height={200}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ marginRight: "30px", fontWeight: "bold" }}>
+              에너지 소비 효율 등급
+            </span>
+            <img src={Energy1} style={{ width: "250px", height: "130px" }} />
+          </div>
+        </CustomContainer>
+      </MainLeftColumn>
     </MainDisplay>
   );
 };

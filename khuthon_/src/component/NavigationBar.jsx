@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import MainIcon from "../images/Main-Icon.png";
 import DeviceConnectIcon from "../images/Device-Connect-Icon.png";
 import DeviceManagementIcon from "../images/Device-Management-Icon.png";
@@ -20,25 +20,33 @@ const TeamName = styled.p`
   align-items: center;
   font-size: 18px;
   font-weight: bold;
-  padding-bottom: 200px;
+  padding-bottom: 150px;
 `;
 
 const Cursor = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 18px;
+  padding: 0 18px; /* 상하좌우 패딩 */
   font-size: 15px;
   cursor: pointer;
   white-space: pre;
   color: inherit;
-  padding-bottom: 28px;
+  padding-bottom: 20px;
 
-  &:hover {
-    font-weight: semibold;
-    background-color: #444cf8;
-    border-radius: 5px;
-  }
+  ${({ active }) =>
+    active &&
+    css`
+      background-color: #444cf8;
+      font-weight: bold;
+      height: 20px;
+    `}
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
 `;
 
 const PageList = [
@@ -68,15 +76,17 @@ const NavigationBar = () => {
           onClick={() => goToPage(link.url, link.text)}
           active={activeItem === link.text}
         >
-          <img
-            src={link.icon}
-            style={{
-              marginRight: "8px",
-              width: "17px",
-              height: "18px",
-            }}
-          />
-          {link.text}
+          <TextWrapper>
+            <img
+              src={link.icon}
+              style={{
+                marginRight: "8px",
+                width: "17px",
+                height: "18px",
+              }}
+            />
+            {link.text}
+          </TextWrapper>
         </Cursor>
       ))}
     </NavDisplay>
