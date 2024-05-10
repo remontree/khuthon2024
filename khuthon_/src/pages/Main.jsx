@@ -3,25 +3,34 @@ import styled from "styled-components";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import axios from "axios";
+import LiveData from "../component/LiveChart";
 
 const MainDisplay = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* BasicContainer는 4개로 고정 */
   gap: 20px;
 `;
 
 const BasicContainer = styled.div`
+  display: flex;
+  justify-content: center;
   background-color: white;
+  border-radius: 5px;
   width: 300px;
   height: 200px;
-  gird-colum: span 1;
+  gird-column: span 1;
 `;
 
 const CustomContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: white;
+  border-radius: 5px;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
-  grid-column: span 2;
+  grid-column: span 2; /* CustomContainer는 2개로 고정 */
   grid-row: auto;
 `;
 
@@ -67,7 +76,6 @@ const Main = ({ main_Data }) => {
           const newData = [...prevData, response.data];
           return newData;
         });
-        //setName(response.data[0][1])
         setTimeout(handleButtonClick, 1000);
       })
       .catch((error) => {
@@ -76,17 +84,17 @@ const Main = ({ main_Data }) => {
       });
   };
 
-  const options = {
+  const options = (customTitle, chartType) => ({
     title: {
-      text: "Real-time Chart with Random Data",
+      text: customTitle,
     },
     series: [
       {
-        type: "line",
+        type: chartType,
         data: data,
       },
     ],
-  };
+  });
 
   return (
     <MainDisplay>
@@ -102,12 +110,21 @@ const Main = ({ main_Data }) => {
       <BasicContainer>
         <Child number={main_Data[0][4]}></Child>
       </BasicContainer>
-      <CustomContainer width={customContainerWidth} height={485}>
-        총 전력 사용량
-        <HighchartsReact highcharts={Highcharts} options={options} />
+      <CustomContainer width={customContainerWidth} height={420}>
+        {/* <LiveData name={"총 전력 사용량"} type={"line"} data={data} /> */}
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options("총 전력 사용량", "line")}
+        />
         <button onClick={handleButtonClick}></button>
       </CustomContainer>
-      <CustomContainer height={250}>장치별 전력 사용량</CustomContainer>
+      <CustomContainer height={210}>
+        {/* <LiveData name={"장치별 전력 사용량"} type={"pie"} data={data} /> */}
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={options("장치별 전력 사용량", "pie")}
+        ></HighchartsReact>
+      </CustomContainer>
     </MainDisplay>
   );
 };

@@ -5,6 +5,7 @@ import NavigationBar from "./component/NavigationBar";
 import Main from "./pages/Main";
 import DeviceConnect from "./pages/DeviceConnect";
 import DeviceManagement from "./pages/DeviceManagement";
+import DeviceDetail from "./component/DeviceDetail";
 import axios from "axios";
 
 const AppWrapper = styled.div`
@@ -55,6 +56,10 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Main main_Data={data} />}></Route>
             <Route path="/Device-Connect" element={<DeviceConnect />}></Route>
+            <Route
+              path="/Device-Connect/:deviceName"
+              element={<DeviceDetail />}
+            ></Route>
             <Route
               path="/Device-Management"
               element={<DeviceManagement />}

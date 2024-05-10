@@ -3,36 +3,45 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 const Device = styled.div`
-  border-top: 3px solid black;
   padding-top: 10px;
-  padding-left: 20px;
+  padding-left: 15px;
   padding-bottom: 20px;
   font-size: 25px;
   font-weight: bold;
+  flex: 1; /* 동일한 너비를 가지도록 합니다. */
+`;
+
+const ConnectSubtitle = styled.div`
+  display: flex;
+  align-items: center; /* 요소들을 수직 정렬합니다. */
 `;
 
 const DeviceListContainer = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   padding-left: 20px;
   padding-right: 20px;
+  margin-left: -25px;
 `;
 
 const AddButton = styled.button`
-  font-size: 50px;
+  font-size: 30px;
   font-weight: bold;
   border: none;
-  width: 120px;
-  height: 100px;
-  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
   cursor: pointer;
-  margin-left: 3px;
-  margin-right: auto;
+  margin-left: auto; /* 왼쪽 여백을 최대한 확보합니다. */
+  margin-right: 20px; /* 오른쪽 여백을 줄입니다. */
   top: 20px;
-  left: 15px;
+  right: 15px; /* 오른쪽 여백을 조절합니다. */
   background-color: #3a426b;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const CloseButton = styled.button`
@@ -70,10 +79,14 @@ const Container = styled.div`
 `;
 
 const ConnectedDevice = styled.div`
-  border: 2px solid black;
-  width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 5px;
+  width: 250px;
   height: 100px;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-left: 21px;
 `;
 
@@ -81,10 +94,10 @@ const DeviceConnect = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [deviceName, setDeviceName] = useState("");
   const [devices, setDevices] = useState([]);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const storedDevices = localStorage.getItem("devices");
+    const storedDevices = sessionStorage.getItem("devices");
     if (storedDevices) {
       // string으로 변환하여 읽기
       setDevices(JSON.parse(storedDevices));
@@ -102,11 +115,11 @@ const DeviceConnect = () => {
   const handleCreateDevice = () => {
     const updatedDevices = [...devices, deviceName];
     setDevices(updatedDevices);
-    localStorage.setItem("devices", JSON.stringify(updatedDevices));
+    sessionStorage.setItem("devices", JSON.stringify(updatedDevices));
     setDeviceName("");
     togglePopup();
 
-    history({ state: deviceName });
+    navigate({ state: deviceName });
   };
 
   const handleKeyPress = (event) => {
@@ -117,9 +130,11 @@ const DeviceConnect = () => {
 
   return (
     <>
-      <Device>Device List</Device>
-      <DeviceListContainer>
+      <ConnectSubtitle>
+        <Device>Device List</Device>
         <AddButton onClick={togglePopup}>+</AddButton>
+      </ConnectSubtitle>
+      <DeviceListContainer>
         {showPopup && (
           <>
             <Backdrop onClick={togglePopup} />
@@ -142,10 +157,15 @@ const DeviceConnect = () => {
             </Popup>
           </>
         )}
+        {devices.map((device, index) => (
+          <ConnectedDevice
+            key={index}
+            onClick={() => navigate(`/Device-Connect/${device}`)}
+          >
+            {device}
+          </ConnectedDevice>
+        ))}
       </DeviceListContainer>
-      {devices.map((device, index) => (
-        <ConnectedDevice key={index}>{device}</ConnectedDevice>
-      ))}
     </>
   );
 };
