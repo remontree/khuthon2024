@@ -9,7 +9,8 @@ import Tree from "../images/Tree.png";
 const NavDisplay = styled.div`
   width: 180px;
   height: 100vh;
-  background-color: rgb(36, 38, 48);
+  // background-color: rgb(36, 38, 48);
+  background-color: #a9cd6c;
   color: white;
   margin-left: 0;
   padding-top: 30px;
@@ -43,7 +44,7 @@ const Cursor = styled.div`
   ${({ active }) =>
     active &&
     css`
-      background-color: #444cf8;
+      background-color: #86c072;
       font-weight: bold;
     `}
 `;

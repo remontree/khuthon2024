@@ -32,7 +32,7 @@ const AnalysisCustomContainer = styled.div`
   grid-row: auto;
 `;
 
-const AnalysisChild = ({ index, number }) => {
+const AnalysisChild = ({ index, number, unit }) => {
   return (
     <div style={{ marginLeft: "-70px" }}>
       <p style={{ fontWeight: "bold" }}>{index}</p>
@@ -44,6 +44,7 @@ const AnalysisChild = ({ index, number }) => {
       >
         {number}
       </span>
+      <span style={{ fontSize: "30px", paddingLeft: "10px" }}>{unit}</span>
     </div>
   );
 };
@@ -94,25 +95,29 @@ const DeviceAnalysis = () => {
           <AnalysisBasicContainer>
             <AnalysisChild
               index={"전력 소모량 최대 시간대"}
-              number={1}
+              number={19}
+              unit={"시"}
             ></AnalysisChild>
           </AnalysisBasicContainer>
           <AnalysisBasicContainer>
             <AnalysisChild
               index={"전력 소모량 최소 시간대"}
-              number={1}
+              number={5}
+              unit={"시"}
             ></AnalysisChild>
           </AnalysisBasicContainer>
           <AnalysisBasicContainer>
             <AnalysisChild
               index={"이번달 예측 전기요금"}
-              number={1}
+              number={11524}
+              unit={"원"}
             ></AnalysisChild>
           </AnalysisBasicContainer>
           <AnalysisBasicContainer>
             <AnalysisChild
               index={"지난달 대비 전력 사용량"}
-              number={1}
+              number={34}
+              unit={"kWh"}
             ></AnalysisChild>
           </AnalysisBasicContainer>
         </div>

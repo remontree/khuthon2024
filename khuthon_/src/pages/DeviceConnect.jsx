@@ -136,7 +136,12 @@ const DeviceConnect = () => {
 
   const ConnectWhat = (content) => {
     return (
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <div
           style={{
             whiteSpace: "nowrap",
@@ -150,7 +155,7 @@ const DeviceConnect = () => {
             marginLeft: "40px",
             marginBottom: "5px",
             border: "none",
-            borderRadius: "5px",
+            borderRadus: "5px",
           }}
           onClick={() => {
             axios({
@@ -203,7 +208,9 @@ const DeviceConnect = () => {
             key={index}
             onClick={() => navigate(`/Device-Connect/${device}`)}
           >
-            {device}
+            <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+              {device}
+            </span>
           </ConnectedDevice>
         ))}
       </DeviceListContainer>
