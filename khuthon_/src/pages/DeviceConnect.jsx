@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Device = styled.div`
   padding-top: 10px;
@@ -48,6 +49,7 @@ const CloseButton = styled.button`
   align-self: flex-end;
   font-size: 12px;
   border: none;
+  margin-top: 130px;
 `;
 
 const Popup = styled.div`
@@ -62,6 +64,9 @@ const Popup = styled.div`
   z-index: 9999;
   display: flex;
   flex-direction: column;
+  height: 350px;
+  width: 250px;
+  text-overflow: ellipsis;
 `;
 
 const Backdrop = styled.div`
@@ -92,8 +97,9 @@ const ConnectedDevice = styled.div`
 
 const DeviceConnect = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [deviceName, setDeviceName] = useState("");
+  // const [deviceName, setDeviceName] = useState("");
   const [devices, setDevices] = useState([]);
+  const [connectable, setConnectable] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -105,27 +111,70 @@ const DeviceConnect = () => {
   }, []);
 
   const togglePopup = () => {
+    axios({
+      method: "get",
+      url: "http://127.0.0.1:5000/show_connectable",
+      responseType: "json",
+    })
+      .then((response) => {
+        console.log(response.data);
+        setConnectable(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setTimeout(total_power_usage_update, 1000);
+      });
     setShowPopup(!showPopup);
   };
 
-  const handleInputChange = (event) => {
-    setDeviceName(event.target.value);
-  };
-
-  const handleCreateDevice = () => {
+  const handleCreateDevice = (deviceName) => {
     const updatedDevices = [...devices, deviceName];
     setDevices(updatedDevices);
     sessionStorage.setItem("devices", JSON.stringify(updatedDevices));
-    setDeviceName("");
-    togglePopup();
-
-    navigate({ state: deviceName });
+    navigate({ state: deviceName }); // 이동 시에 디바이스 이름 전달
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
-      handleCreateDevice();
+  const ConnectWhat = (content) => {
+    return (
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+          }}
+        >
+          {content}
+        </div>
+        <button
+          style={{
+            marginLeft: "40px",
+            marginBottom: "5px",
+            border: "none",
+            borderRadius: "5px",
+          }}
+          onClick={() => {
+            axios({
+              method: "get",
+              url:
+                "http://127.0.0.1:5000/device_connect_button/" +
+                encodeURIComponent(content),
+              responseType: "json",
+            });
+            handleCreateDevice(content); // 선택한 항목의 내용으로 디바이스 생성
+          }}
+        >
+          연결
+        </button>
+      </div>
+    );
+  };
+
+  const ConnectWhatList = (num, contentArray) => {
+    const connectWhatList = [];
+    for (let i = 0; i < num; i++) {
+      connectWhatList.push(ConnectWhat(contentArray[i]));
     }
+    return connectWhatList;
   };
 
   return (
@@ -141,17 +190,9 @@ const DeviceConnect = () => {
             <Popup>
               <Container>
                 <p>연결 가능한 디바이스</p>
-
-                <input
-                  type="text"
-                  value={deviceName}
-                  onChange={handleInputChange}
-                  onKeyPress={handleKeyPress}
-                  placeholder="디바이스 이름"
-                  autoFocus
-                />
-                {/* 만약 연결이 되면 팝업창이 닫힘. */}
-                <button onClick={handleCreateDevice}>연결!</button>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {ConnectWhatList(connectable.length, connectable)}
+                </div>
               </Container>
               <CloseButton onClick={togglePopup}>닫기</CloseButton>
             </Popup>

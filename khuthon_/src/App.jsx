@@ -4,7 +4,7 @@ import styled from "styled-components";
 import NavigationBar from "./component/NavigationBar";
 import Main from "./pages/Main";
 import DeviceConnect from "./pages/DeviceConnect";
-import DeviceManagement from "./pages/DeviceManagement";
+import DeviceAnalysis from "./pages/DeviceAnalysis";
 import DeviceDetail from "./component/DeviceDetail";
 import axios from "axios";
 
@@ -60,10 +60,7 @@ const App = () => {
               path="/Device-Connect/:deviceName"
               element={<DeviceDetail />}
             ></Route>
-            <Route
-              path="/Device-Management"
-              element={<DeviceManagement />}
-            ></Route>
+            <Route path="/Device-Analysis" element={<DeviceAnalysis />}></Route>
           </Routes>
         </ContentWrapper>
       </AppWrapper>
