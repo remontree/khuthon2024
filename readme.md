@@ -36,4 +36,4 @@
 
 
 ## 프로그램 화면
-<video src="video/demo.mp4" autoplay="autoplay" loop = "loop" type="video/mp4">
+<img src = "img/demo.gif">
