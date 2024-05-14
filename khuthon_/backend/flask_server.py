@@ -18,7 +18,7 @@ for i in range(1):
 app = Flask(__name__)
 CORS(app)
 
-conn_addr = ("localhost",2059)
+conn_addr = ("localhost",2060)
 device_server = server.Server(conn_addr[0],conn_addr[1])
 device_server_start_thread = threading.Thread(target=device_server.start)
 device_server_start_thread.start()

@@ -25,8 +25,8 @@ class Client:
         self.s.close()
 
 def main():
-    print("wiow")
-    conn_addr = ("localhost",2059)
+    print("clients are started!")
+    conn_addr = ("localhost",2060)
   
     client_list = []
     for i in range(10):
